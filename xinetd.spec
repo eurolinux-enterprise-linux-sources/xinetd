@@ -1,7 +1,7 @@
 Summary: A secure replacement for inetd
 Name: xinetd
 Version: 2.3.14
-Release: 35%{?dist}
+Release: 38%{?dist}
 License: xinetd 
 Group: System Environment/Daemons
 Epoch: 2
@@ -33,6 +33,8 @@ Patch20: xinetd-2.3.14-rpc-specific-port.patch
 Patch21: xinetd-2.3.14-services-memory-corruption.patch
 Patch22: xinetd-2.3.14-leaking-fds.patch
 Patch23: xinetd-2.3.14-leaking-fds-2a.patch
+Patch24: xinetd-2.3.14-retry-svc-activate-in-cps-restart.patch
+Patch25: xinetd-2.3.14-tcpmux-nonmux-security.patch
 
 BuildRequires: autoconf, automake
 BuildRequires: libselinux-devel >= 1.30
@@ -83,6 +85,8 @@ located in the /etc/xinetd.d directory.
 %patch21 -p1 -b .services-memory-corruption
 %patch22 -p1
 %patch23 -p1
+%patch24 -p1 -b .retry-svc-activate
+%patch25 -p1 -b .tcpmux-nonmux-security
 
 aclocal
 autoconf
@@ -143,6 +147,18 @@ fi
 %{_mandir}/*/*
 
 %changelog
+* Wed Dec 05 2012 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-38
+- CVE-2012-0862 xinetd: enables unintentional services over tcpmux port
+- Resolves: #883653
+
+* Wed Aug 15 2012 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-37
+- Fix changelog entry
+- Related: #809271
+
+* Wed Aug 15 2012 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-36
+- Fix: Service disabled due to bind failure
+- Resolves: #809271
+
 * Fri Jul 20 2012 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-35
 - Fix leaking file descriptors (#841916)
 
