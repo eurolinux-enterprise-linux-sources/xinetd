@@ -1,7 +1,7 @@
 Summary: A secure replacement for inetd
 Name: xinetd
 Version: 2.3.14
-Release: 38%{?dist}
+Release: 39%{?dist}
 License: xinetd 
 Group: System Environment/Daemons
 Epoch: 2
@@ -35,6 +35,7 @@ Patch22: xinetd-2.3.14-leaking-fds.patch
 Patch23: xinetd-2.3.14-leaking-fds-2a.patch
 Patch24: xinetd-2.3.14-retry-svc-activate-in-cps-restart.patch
 Patch25: xinetd-2.3.14-tcpmux-nonmux-security.patch
+Patch26: xinetd-2.3.14-creds.patch
 
 BuildRequires: autoconf, automake
 BuildRequires: libselinux-devel >= 1.30
@@ -87,6 +88,7 @@ located in the /etc/xinetd.d directory.
 %patch23 -p1
 %patch24 -p1 -b .retry-svc-activate
 %patch25 -p1 -b .tcpmux-nonmux-security
+%patch26 -p1 -b .creds
 
 aclocal
 autoconf
@@ -147,6 +149,10 @@ fi
 %{_mandir}/*/*
 
 %changelog
+* Tue Sep 24 2013 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-39
+- Honor user and group directives
+- Resolves: CVE-2013-4342
+
 * Wed Dec 05 2012 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-38
 - CVE-2012-0862 xinetd: enables unintentional services over tcpmux port
 - Resolves: #883653
