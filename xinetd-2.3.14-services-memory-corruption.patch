@@ -1,0 +1,13 @@
+--- a/xinetd/service.c	2011-05-27 14:37:38.064782585 +0530
++++ b/xinetd/service.c	2011-06-08 18:30:59.773441563 +0530
+@@ -339,9 +339,9 @@
+        out_of_memory( func );
+        return( FAILED );
+      }
++     ps.rws.pfd_array = tmp;
+      memset(&ps.rws.pfd_array[ps.rws.pfds_last], 0, (ps.rws.pfds_allocated-
+        ps.rws.pfds_last)*sizeof(struct pollfd));
+-     ps.rws.pfd_array = tmp;
+    }
+    SVC_POLLFD( sp ) = &ps.rws.pfd_array[ps.rws.pfds_last++] ;
+ #endif /* HAVE_POLL */
