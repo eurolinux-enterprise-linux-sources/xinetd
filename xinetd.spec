@@ -1,7 +1,7 @@
 Summary: A secure replacement for inetd
 Name: xinetd
 Version: 2.3.14
-Release: 34%{?dist}
+Release: 35%{?dist}
 License: xinetd 
 Group: System Environment/Daemons
 Epoch: 2
@@ -31,6 +31,8 @@ Patch19: xinetd-2.3.14-fix-type-punned-ptr.patch
 Patch20: xinetd-2.3.14-rpc-specific-port.patch
 # To be obsoleted by #790036 complex fixes:
 Patch21: xinetd-2.3.14-services-memory-corruption.patch
+Patch22: xinetd-2.3.14-leaking-fds.patch
+Patch23: xinetd-2.3.14-leaking-fds-2a.patch
 
 BuildRequires: autoconf, automake
 BuildRequires: libselinux-devel >= 1.30
@@ -79,6 +81,8 @@ located in the /etc/xinetd.d directory.
 %patch19 -p1 -b .fix-type-punned-ptr
 %patch20 -p1 -b .rpc-specific-port
 %patch21 -p1 -b .services-memory-corruption
+%patch22 -p1
+%patch23 -p1
 
 aclocal
 autoconf
@@ -139,6 +143,9 @@ fi
 %{_mandir}/*/*
 
 %changelog
+* Fri Jul 20 2012 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-35
+- Fix leaking file descriptors (#841916)
+
 * Mon Feb 13 2012 Vojtech Vitek (V-Teq) <vvitek@redhat.com> - 2:2.3.14-34
 - Avoid possible hang while logging an unexpected signal (#694820)
 - Fix Rpmdiff build warning about "dereferencing type-punned pointer" (#697783)
