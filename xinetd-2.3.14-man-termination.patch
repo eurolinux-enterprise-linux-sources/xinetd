@@ -1,0 +1,29 @@
+From 8a400b50d53614f0a12accff23e2c47a05b48d44 Mon Sep 17 00:00:00 2001
+From: jchaloup <jchaloup@redhat.com>
+Date: Wed, 4 Jun 2014 14:36:31 +0200
+Subject: [PATCH] xintd.8 reload termination handling
+
+---
+ xinetd/xinetd.man | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/xinetd/xinetd.man b/xinetd/xinetd.man
+index d52c2cc..07d5f11 100644
+--- a/xinetd/xinetd.man
++++ b/xinetd/xinetd.man
+@@ -45,6 +45,12 @@ provide features such as access control and logging.  Furthermore,
+ .I /etc/services.
+ Therefore, anybody can use \fBxinetd\fP to start special-purpose
+ servers.
++.LP
++BEWARE of xinetd reload termination handling.
++For services with type = INTERNAL, SIGTERM signal will be sent.
++For services without type = INTERNAL, SIGKILL signall will be sent.
++Take this into an account when dealing with proper handling of the SIGTERM and SIGKILL.
++It is important to be aware of this as your xinetd service could be killed on a xinetd reload.
+ .\" *************************** OPTIONS *********************************
+ .SH OPTIONS
+ .TP
+-- 
+1.9.3
+

@@ -1,0 +1,18 @@
+diff -rup xinetd-2.3.14-orig/xinetd/confparse.c xinetd-2.3.14/xinetd/confparse.c
+--- xinetd-2.3.14-orig/xinetd/confparse.c	2015-12-01 13:41:35.000000000 +0100
++++ xinetd-2.3.14/xinetd/confparse.c	2015-12-01 15:42:03.790999814 +0100
+@@ -245,7 +245,13 @@ static status_e service_fill( struct ser
+              M_SET(SC_XFLAGS(scp), SF_IPV6);
+       }
+       else
+-         M_SET(SC_XFLAGS(scp), SF_IPV6); /*try bind IPv6 by default*/
++      {
++          /* Try to bind IPv6 by default, but only if supported by kernel. */
++          if (access("/proc/net/if_inet6", F_OK) < 0 && errno == ENOENT)
++              M_SET(SC_XFLAGS(scp), SF_IPV4);
++          else
++              M_SET(SC_XFLAGS(scp), SF_IPV6);
++      }
+    }
+ 
+    if (SC_ORIG_BIND_ADDR(scp))

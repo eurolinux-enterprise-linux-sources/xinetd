@@ -1,8 +1,8 @@
 Summary: A secure replacement for inetd
 Name: xinetd
 Version: 2.3.14
-Release: 39%{?dist}
-License: xinetd 
+Release: 40%{?dist}
+License: xinetd
 Group: System Environment/Daemons
 Epoch: 2
 URL: http://www.xinetd.org
@@ -36,6 +36,8 @@ Patch23: xinetd-2.3.14-leaking-fds-2a.patch
 Patch24: xinetd-2.3.14-retry-svc-activate-in-cps-restart.patch
 Patch25: xinetd-2.3.14-tcpmux-nonmux-security.patch
 Patch26: xinetd-2.3.14-creds.patch
+Patch27: xinetd-2.3.14-bind-ipv6-2.patch
+Patch28: xinetd-2.3.14-man-termination.patch
 
 BuildRequires: autoconf, automake
 BuildRequires: libselinux-devel >= 1.30
@@ -56,7 +58,7 @@ has its own specific configuration file for Xinetd; the files are
 located in the /etc/xinetd.d directory.
 
 %prep
-%setup -q  
+%setup -q
 
 # SPARC/SPARC64 needs -fPIE/-PIE
 # This really should be detected by configure.
@@ -89,6 +91,8 @@ located in the /etc/xinetd.d directory.
 %patch24 -p1 -b .retry-svc-activate
 %patch25 -p1 -b .tcpmux-nonmux-security
 %patch26 -p1 -b .creds
+%patch27 -p1
+%patch28 -p1
 
 aclocal
 autoconf
@@ -122,13 +126,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ $1 = 1 ]; then
-    /sbin/chkconfig --add xinetd 
+    /sbin/chkconfig --add xinetd
 fi
 
 %preun
 if [ $1 = 0 ]; then
     /sbin/service xinetd stop > /dev/null 2>&1
-    /sbin/chkconfig --del xinetd 
+    /sbin/chkconfig --del xinetd
 fi
 
 %postun
@@ -139,7 +143,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc INSTALL CHANGELOG COPYRIGHT README xinetd/sample.conf contrib/empty.conf 
+%doc INSTALL CHANGELOG COPYRIGHT README xinetd/sample.conf contrib/empty.conf
 
 %config(noreplace) /etc/xinetd.conf
 %config(noreplace) /etc/sysconfig/xinetd
@@ -149,6 +153,10 @@ fi
 %{_mandir}/*/*
 
 %changelog
+* Wed Dec 16 2015 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-40
+- Fix: xinetd attempts to bind to IPv6 sockets even on systems with IPv6 disabled (#1285091)
+- Fix: modify the xinetd man page to make it more clear on what happens to services on xinetd reload (#1119317)
+
 * Tue Sep 24 2013 Jan Synáček <jsynacek@redhat.com> - 2:2.3.14-39
 - Honor user and group directives
 - Resolves: CVE-2013-4342
