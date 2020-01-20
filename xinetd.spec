@@ -1,7 +1,7 @@
 Summary: A secure replacement for inetd
 Name: xinetd
 Version: 2.3.15
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: xinetd
 Group: System Environment/Daemons
 Epoch: 2
@@ -59,6 +59,8 @@ Patch28: xinetd-2.3.15-context-exepath.patch
 Patch29: xinetd-2.3.15-creds.patch
 # Fix #1037565 - xinetd segfaults when connecting to tcpmux service
 Patch30: xinetd-2.3.15-tcpmux-nameinargs-disable-service.patch
+# Fix #1147538 - modify the xinetd man page to make it more clear on what happens to services on xinetd reload
+Patch31: xinetd-2.3.15-man-reload.patch
 
 BuildRequires: autoconf, automake
 BuildRequires: libselinux-devel >= 1.30
@@ -116,6 +118,7 @@ located in the /etc/xinetd.d directory.
 %patch28 -p1 -b .context-exepath
 %patch29 -p1 -b .creds
 %patch30 -p1
+%patch31 -p1
 
 aclocal
 autoconf
@@ -163,6 +166,9 @@ install -m 600 %SOURCE3 $RPM_BUILD_ROOT/etc/sysconfig/xinetd
 %{_mandir}/*/*
 
 %changelog
+* Thu Mar  3 2016 Jan Synáček <jsynacek@redhat.com> - 2:2.3.15-13
+- modify the xinetd man page to make it more clear on what happens to services on xinetd reload (#1147538)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2:2.3.15-12
 - Mass rebuild 2014-01-24
 

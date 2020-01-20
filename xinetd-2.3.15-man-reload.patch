@@ -1,0 +1,17 @@
+--- a/xinetd/xinetd.man
++++ b/xinetd/xinetd.man
+@@ -45,6 +45,12 @@ provide features such as access control and logging.  Furthermore,
+ .I /etc/services.
+ Therefore, anybody can use \fBxinetd\fP to start special-purpose
+ servers.
++.LP
++BEWARE of xinetd reload termination handling.
++For services with type = INTERNAL, SIGTERM signal will be sent.
++For services without type = INTERNAL, SIGKILL signall will be sent.
++Take this into an account when dealing with proper handling of the SIGTERM and SIGKILL.
++It is important to be aware of this as your xinetd service could be killed on a xinetd reload.
+ .\" *************************** OPTIONS *********************************
+ .SH OPTIONS
+ .TP
+-- 
+1.9.3
