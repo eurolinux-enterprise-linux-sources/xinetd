@@ -1,7 +1,7 @@
 Summary: A secure replacement for inetd
 Name: xinetd
 Version: 2.3.15
-Release: 13%{?dist}
+Release: 8%{?dist}
 License: xinetd
 Group: System Environment/Daemons
 Epoch: 2
@@ -57,10 +57,6 @@ Patch27: xinetd-2.3.15-bad-port-check.patch
 Patch28: xinetd-2.3.15-context-exepath.patch
 # Fix #1006100 - xinetd: ignores user and group directives for tcpmux services
 Patch29: xinetd-2.3.15-creds.patch
-# Fix #1037565 - xinetd segfaults when connecting to tcpmux service
-Patch30: xinetd-2.3.15-tcpmux-nameinargs-disable-service.patch
-# Fix #1147538 - modify the xinetd man page to make it more clear on what happens to services on xinetd reload
-Patch31: xinetd-2.3.15-man-reload.patch
 
 BuildRequires: autoconf, automake
 BuildRequires: libselinux-devel >= 1.30
@@ -117,8 +113,6 @@ located in the /etc/xinetd.d directory.
 %patch27 -p1 -b .bad-port-check
 %patch28 -p1 -b .context-exepath
 %patch29 -p1 -b .creds
-%patch30 -p1
-%patch31 -p1
 
 aclocal
 autoconf
@@ -166,24 +160,6 @@ install -m 600 %SOURCE3 $RPM_BUILD_ROOT/etc/sysconfig/xinetd
 %{_mandir}/*/*
 
 %changelog
-* Thu Mar  3 2016 Jan Synáček <jsynacek@redhat.com> - 2:2.3.15-13
-- modify the xinetd man page to make it more clear on what happens to services on xinetd reload (#1147538)
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2:2.3.15-12
-- Mass rebuild 2014-01-24
-
-* Mon Jan  6 2014 Jan Synáček <jsynacek@redhat.com> - 2:2.3.15-11
-- fixup of the previous patch
-- Related:  #1037565
-- Resolves: #1042357
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2:2.3.15-10
-- Mass rebuild 2013-12-27
-
-* Tue Dec  3 2013 Jan Synáček <jsynacek@redhat.com> - 2:2.3.15-9
-- xinetd segfaults when connecting to tcpmux service
-- Resolves: #1037565
-
 * Tue Sep 24 2013 Jan Synáček <jsynacek@redhat.com> - 2:2.3.15-8
 - Honor user and group directives (re-fix the previous commit)
 - Resolves: CVE-2013-4342
